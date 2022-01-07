@@ -1,12 +1,16 @@
-console.log("Welcome to Tic Tac Toe")
 let music = new Audio("music.mp3")
 let audioTurn = new Audio("ting.mp3")
 let gameover = new Audio("gameover.mp3")
 let turn = "X"
 let isgameover = false;
-
+let isDraw=false;
+let i=0;
 // Function to change the turn
 const changeTurn = ()=>{
+    i=i+1;
+    if(i==9) {
+        isDraw=true;
+    }
     return turn === "X"? "0": "X"
 }
 
@@ -24,9 +28,11 @@ const checkWin = ()=>{
         [2, 4, 6, 5, 15, 135],
     ]
     wins.forEach(e =>{
-        if((boxtext[e[0]].innerText === boxtext[e[1]].innerText) && (boxtext[e[2]].innerText === boxtext[e[1]].innerText) && (boxtext[e[0]].innerText !== "") ){
+        if((boxtext[e[0]].innerText === boxtext[e[1]].innerText) && (boxtext[e[2]].innerText === boxtext[e[1]].innerText) && (boxtext[e[0]].innerText !== "") )
+        {
             document.querySelector('.info').innerText = boxtext[e[0]].innerText + " Won"
-            isgameover = true
+            isgameover = true;
+            isDraw = false;
             document.querySelector('.imgbox').getElementsByTagName('img')[0].style.width = "200px";
             document.querySelector(".line").style.transform = `translate(${e[3]}vw, ${e[4]}vw) rotate(${e[5]}deg)`
             document.querySelector(".line").style.width = "20vw";
@@ -43,11 +49,12 @@ Array.from(boxes).forEach(element =>{
         if(boxtext.innerText === ''){
             boxtext.innerText = turn;
             turn = changeTurn();
-            audioTurn.play();
             checkWin();
+            audioTurn.play();
             if (!isgameover){
                 document.getElementsByClassName("info")[0].innerText  =  turn+"'s Turn";
-            } 
+            }
+            if (isDraw) document.getElementsByClassName("info")[0].innerText  =  "It's a Draw";
         }
     })
 })
@@ -59,7 +66,9 @@ reset.addEventListener('click', ()=>{
         element.innerText = ""
     });
     turn = "X"; 
-    isgameover = false
+    isgameover = false;
+    isDraw = false;
+    i=0;
     document.querySelector(".line").style.width = "0vw";
     document.getElementsByClassName("info")[0].innerText  = turn+"'s Turn";
     document.querySelector('.imgbox').getElementsByTagName('img')[0].style.width = "0px"
