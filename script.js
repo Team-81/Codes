@@ -7,7 +7,7 @@ let isDraw=false;
 let i=0;
 // Function to change the turn
 const changeTurn = ()=>{
-    i=i+1;
+    i++;
     if(i==9) {
         isDraw=true;
     }
